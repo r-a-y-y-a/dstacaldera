@@ -1,0 +1,10 @@
+adversary_id: f2c1a3a9-47bb-4ab0-9520-8df555071427
+name: Turla
+description: Requires Administrator Privileges
+atomic_ordering:
+- 34952e2eefd3066c5f574744e1734ca6
+- 8f2f5143-3d14-4326-9264-28ba87919cf9
+- 82dcefb5c3512d73bf2248cb0127c4ae
+- 153905affadb36241ced3d3b12ba0481
+objective: 495a9828-cab1-44dd-a0ca-66e58177d8cc
+tags: []

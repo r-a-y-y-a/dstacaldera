@@ -1,0 +1,10 @@
+adversary_id: f68dbd3e-5a88-45ba-b1c8-a46a3149c23b
+name: APT28
+description: Automated APT28
+atomic_ordering:
+- 6469befa-748a-4b9c-a96d-f191fde47d89
+- 3dff0093-37b5-4456-a248-45692c13472e
+- e1add6c1-74bc-402e-9d1f-e04d284588b9
+- b88a715a-c348-474b-a470-db1d55be4160
+objective: 495a9828-cab1-44dd-a0ca-66e58177d8cc
+tags: []

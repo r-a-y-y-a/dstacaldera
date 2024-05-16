@@ -1,0 +1,13 @@
+adversary_id: 6b3ae815-d116-4f38-ac63-724c7a399137
+name: evilcorp
+description: evilcorp
+atomic_ordering:
+- c7ec57cd-933e-42b6-99a4-e852a9e57a33
+- d1bde9af5206152c9980a5b6adcc1813
+- 4908fdc4-74fc-4d7c-8935-26d11ad26a8d
+- 31a7326fcc56c71d97da23e3fe1ec364
+- 94d025af9b1f9d5e5c1aab0fedc6aa5a
+- c7ec57cd-933e-42b6-99a4-e852a9e57a33
+- e528524d6a3cddaaddc89fcc719e2a3f
+objective: 495a9828-cab1-44dd-a0ca-66e58177d8cc
+tags: []

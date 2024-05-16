@@ -1,0 +1,31 @@
+- tactic: discovery
+  technique_name: 'Account Discovery: Domain Account'
+  technique_id: t1087.002
+  name: Local Domain Accounts
+  description: domain acc
+  executors:
+  - name: psh
+    platform: windows
+    command: Get-DomainGroupMember -Identity "Group Admins"
+    code: null
+    language: null
+    build_target: null
+    payloads:
+    - SharpView.exe
+    uploads: []
+    timeout: 60
+    parsers: []
+    cleanup: []
+    variations: []
+    additional_info: {}
+  requirements: []
+  privilege: ''
+  repeatable: false
+  buckets: []
+  additional_info:
+    cleanup: '[]'
+  access: {}
+  singleton: true
+  plugin: ''
+  delete_payload: true
+  id: 4269903e-fb8c-42b3-b605-e1cb4b7c23b9

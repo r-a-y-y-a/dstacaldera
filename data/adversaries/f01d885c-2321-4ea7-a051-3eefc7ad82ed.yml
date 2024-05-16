@@ -1,0 +1,10 @@
+adversary_id: f01d885c-2321-4ea7-a051-3eefc7ad82ed
+name: APT33
+description: Requires Administrator Privileges for Lazagne to produce the best results
+atomic_ordering:
+- 6469befa-748a-4b9c-a96d-f191fde47d89
+- 5dcb51ec-7799-4739-91c4-009de2f9abfb
+- 00594067-e4ad-4288-a902-e8ea1339c230
+- 35c12b83-e74a-46cd-9401-1dbe7e28924a
+objective: 495a9828-cab1-44dd-a0ca-66e58177d8cc
+tags: []

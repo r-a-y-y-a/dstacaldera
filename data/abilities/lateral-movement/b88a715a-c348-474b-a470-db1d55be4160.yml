@@ -1,0 +1,40 @@
+- tactic: lateral-movement
+  technique_name: Rundll32.exe
+  technique_id: T1085
+  name: APT28 - Malicious DLL [RAYSON]
+  description: Uses windows rundll32.exe command to run dll. Malicious DLL can be
+    changed as a payload, currently only writes and saves redteam.txt to same directory
+    as proof of concept.
+  executors:
+  - name: psh
+    platform: windows
+    command: 'mv pentest.dll #{host.dir.staged};
+
+      cd #{host.dir.staged};
+
+      rundll32.exe pentest.dll,mydllentry'
+    code: null
+    language: null
+    build_target: null
+    payloads:
+    - pentest.dll
+    uploads: []
+    timeout: 60
+    parsers: []
+    cleanup: []
+    variations: []
+    additional_info: {}
+  requirements:
+  - module: plugins.stockpile.app.requirements.paw_provenance
+    relationship_match:
+    - source: host.dir.staged
+  privilege: ''
+  repeatable: false
+  buckets: []
+  additional_info:
+    cleanup: '[]'
+  access: {}
+  singleton: true
+  plugin: ''
+  delete_payload: false
+  id: b88a715a-c348-474b-a470-db1d55be4160

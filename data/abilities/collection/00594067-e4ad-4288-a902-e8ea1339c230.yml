@@ -1,0 +1,45 @@
+- tactic: collection
+  technique_name: Archive Collected Data
+  technique_id: T1560
+  name: Compress data via WinRAR - APT33
+  description: Stage for Exit, Password for decompressing is "APT33StrikesAgain"
+  executors:
+  - name: psh
+    platform: windows
+    command: 'mv .\WinRAR.exe #{host.dir.staged};
+
+      cd #{host.dir.staged};
+
+      Start-Process ".\WinRAR.exe" -ArgumentList "a -ibck -pAPT33StrikesAgain `".\results.rar`"
+      `".\lazagne_results.txt`"";
+
+      echo #{host.dir.staged}\results.rar;'
+    code: null
+    language: null
+    build_target: null
+    payloads:
+    - WinRAR.exe
+    uploads: []
+    timeout: 60
+    parsers:
+    - module: plugins.stockpile.app.parsers.basic
+      parserconfigs:
+      - source: host.file.path
+        custom_parser_vals: {}
+    cleanup: []
+    variations: []
+    additional_info: {}
+  requirements:
+  - module: plugins.stockpile.app.requirements.paw_provenance
+    relationship_match:
+    - source: host.dir.staged
+  privilege: ''
+  repeatable: false
+  buckets: []
+  additional_info:
+    cleanup: '[]'
+  access: {}
+  singleton: true
+  plugin: ''
+  delete_payload: true
+  id: 00594067-e4ad-4288-a902-e8ea1339c230

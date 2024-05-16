@@ -1,0 +1,41 @@
+- tactic: initial-access
+  technique_name: Sphearphishing Attachment
+  technique_id: T1193
+  name: APT28 - Spearphishing Word Document [RAYSON]
+  description: IP TO BE CHANGED IN MS WORD DOCUMENT MANUALLY (Search Visual Basic
+    Editor in MSWord after opening document) - VBA Code in a MSWord document runs
+    code that will connect to attacking machine and use outbound HTTP connection to
+    download files from attacker.
+  executors:
+  - name: psh
+    platform: windows
+    command: 'mv maldoc.docm #{host.dir.staged};
+
+      cd #{host.dir.staged};
+
+      .\maldoc.docm'
+    code: null
+    language: null
+    build_target: null
+    payloads:
+    - maldoc.docm
+    uploads: []
+    timeout: 60
+    parsers: []
+    cleanup: []
+    variations: []
+    additional_info: {}
+  requirements:
+  - module: plugins.stockpile.app.requirements.paw_provenance
+    relationship_match:
+    - source: host.dir.staged
+  privilege: ''
+  repeatable: false
+  buckets: []
+  additional_info:
+    cleanup: '[]'
+  access: {}
+  singleton: true
+  plugin: ''
+  delete_payload: false
+  id: 3dff0093-37b5-4456-a248-45692c13472e

